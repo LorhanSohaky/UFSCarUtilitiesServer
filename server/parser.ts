@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 
 class Parser {
 
-	public async get_cardapio() {
+	public async get_cardapio_semana() {
 		const url = 'https://www2.ufscar.br/restaurantes-universitario/cardapio';
 		let result;
 		await request(url).then(function (htmlString) {

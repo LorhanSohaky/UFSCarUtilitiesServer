@@ -40,7 +40,7 @@ class App {
 
 	routes() {
 		this.app.route('/cardapio').get(cache(100), (request, response) => {
-			Parser.get_cardapio().then((cardapio) => {
+			Parser.get_cardapio_semana().then((cardapio) => {
 				return response.status(200).json(cardapio);
 			});
 		});
