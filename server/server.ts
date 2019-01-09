@@ -1,3 +1,5 @@
 import App from './app';
 
-App.app.listen(8080, () => console.log('Server on'));
+const port: number = Number(process.env.port) || 8080;
+
+App.app.listen(port, () => console.log('Server on'));

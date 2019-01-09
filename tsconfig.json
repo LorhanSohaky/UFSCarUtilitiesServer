@@ -3,6 +3,8 @@
 		"target": "es5",
 		"module": "commonjs",
 		"outDir": "build",
+		"noEmitOnError": true,
+		"noImplicitAny": true,
 		"typeRoots": [
 			"../node_modules/@types"
 		],

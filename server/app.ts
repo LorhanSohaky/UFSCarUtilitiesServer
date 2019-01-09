@@ -2,25 +2,9 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 import * as bodyParser from 'body-parser';
 import Parser from './parser';
-import * as  mcache from 'memory-cache';
+import * as apicache from 'apicache';
 
-var cache = (duration) => {
-	return (request, response, next) => {
-		let key = '__express__' + request.originalUrl || request.url
-		let cachedBody = mcache.get(key)
-		if (cachedBody) {
-			response.send(cachedBody);
-			return;
-		} else {
-			response.sendResponse = response.send;
-			response.send = (body) => {
-				mcache.put(key, body, duration * 1000);
-				response.sendResponse(body);
-			}
-		}
-		next();
-	}
-}
+let cache = apicache.middleware
 
 class App {
 	public app: express.Application;
@@ -39,20 +23,20 @@ class App {
 	}
 
 	routes() {
-		this.app.route('/cardapio').get(cache(100), (request, response) => {
+		this.app.route('/cardapio').get(cache('60 minutes'), (request, response) => {
 			Parser.get_cardapio_semana().then((cardapio) => {
 				return response.status(200).json(cardapio);
 			});
 		});
 
-		this.app.route('/cardapio/hoje').get(cache(100), (request, response) => {
+		this.app.route('/cardapio/hoje').get(cache('60 minutes'), (request, response) => {
 			let refeicao = request.params.refeicao;
 			Parser.get_cardapio_hoje().then((cardapio) => {
 				return response.status(200).json(cardapio);
 			});
 		});
 
-		this.app.route('/cardapio/hoje/:refeicao').get(cache(100), (request, response) => {
+		this.app.route('/cardapio/hoje/:refeicao').get(cache('60 minutes'), (request, response) => {
 			let refeicao = request.params.refeicao;
 			Parser.get_cardapio_hoje().then((cardapio) => {
 				cardapio = cardapio.filter((item) => {
