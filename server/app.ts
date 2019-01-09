@@ -44,6 +44,23 @@ class App {
 				return response.status(200).json(cardapio);
 			});
 		});
+
+		this.app.route('/cardapio/hoje').get(cache(100), (request, response) => {
+			let refeicao = request.params.refeicao;
+			Parser.get_cardapio_hoje().then((cardapio) => {
+				return response.status(200).json(cardapio);
+			});
+		});
+
+		this.app.route('/cardapio/hoje/:refeicao').get(cache(100), (request, response) => {
+			let refeicao = request.params.refeicao;
+			Parser.get_cardapio_hoje().then((cardapio) => {
+				cardapio = cardapio.filter((item) => {
+					return item.refeicao === refeicao;
+				});
+				return response.status(200).json(cardapio);
+			});
+		});
 	}
 }
 
