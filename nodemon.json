@@ -6,6 +6,6 @@
 	"watch": [
 		"server"
 	],
-	"exec": "npm start",
+	"exec": "ts-node server/server.ts",
 	"ext": "ts"
 }
